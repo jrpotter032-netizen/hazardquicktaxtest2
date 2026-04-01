@@ -1,0 +1,6 @@
+ Redirects configuration
+
+# Redirect all traffic from /old-path to /new-path
+/old-path /new-path 301
+
+# Add other redirect rules below

@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hazard Quick Tax – Serving you since 1995</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --navy-primary: #001a3a;
+      --navy-soft: #1e3a5f;
+      --green-primary: #228B22;
+      --green-bright: #32CD32;
+      --green-soft: #4aa74a;
+      --red-action: #DC143C;
+      --white: #ffffff;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --text-dark: #0f172a;
+      --text-soft: #64748b;
+      --shadow-light: 0 10px 40px rgba(0, 26, 58, 0.1);
+      --shadow-hover: 0 20px 60px rgba(0, 26, 58, 0.15);
+      --radius-sm: 10px;
+      --radius-lg: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--gray-100);
+      color: var(--text-dark);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* TOP INFO BAR */
+    .top-info-bar {
+      background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+      color: var(--white);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: var(--shadow-light);
+    }
+
+    .top-info-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .top-info-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .top-info-item i {
+      font-size: 18px;
+    }
+
+    .top-info-item a {
+      color: var(--white);
+      transition: opacity 0.3s ease;
+    }
+
+    .top-info-item a:hover {
+      opacity: 0.8;
+    }
+
+    /* STICKY CTA BUTTON */
+    .sticky-cta {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: linear-gradient(135deg, var(--red-action), #e52e4f);
+      color: var(--white);
+      padding: 16px 28px;
+      border-radius: var(--radius-lg);
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: var(--shadow-hover);
+      z-index: 50;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      border: none;
+    }
+
+    .sticky-cta:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 32px 80px rgba(220, 20, 60, 0.4);
+    }
+
+    .sticky-cta i {
+      font-size: 18px;
+    }
+
+    /* MODAL STYLES */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: var(--white);
+      padding: 48px 40px;
+      border-radius: var(--radius-lg);
+      max-width: 600px;
+      width: 90%;
+      box-shadow: var(--shadow-hover);
+      animation: slideUp 0.3s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--gray-200);
+    }
+
+    .modal-header h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin: 0;
+    }
+
+    .modal-close {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: color 0.3s ease;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .modal-close:hover {
+      color: var(--red-action);
+    }
+
+    /* CALENDAR STYLES */
+    .calendar-container {
+      margin-bottom: 32px;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .calendar-header h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin: 0;
+    }
+
+    .calendar-nav {
+      display: flex;
+      gap: 12px;
+    }
+
+    .calendar-nav button {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--gray-200);
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--navy-primary);
+      transition: all 0.3s ease;
+    }
+
+    .calendar-nav button:hover {
+      background: var(--green-primary);
+      color: var(--white);
+      border-color: var(--green-primary);
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .calendar-day-header {
+      text-align: center;
+      font-weight: 700;
+      color: var(--navy-primary);
+      padding: 12px;
+      font-size: 14px;
+    }
+
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-dark);
+      transition: all 0.3s ease;
+      background: var(--white);
+    }
+
+    .calendar-day:hover:not(.disabled) {
+      border-color: var(--green-primary);
+      background: rgba(34, 139, 34, 0.1);
+    }
+
+    .calendar-day.selected {
+      background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+      color: var(--white);
+      border-color: var(--green-primary);
+    }
+
+    .calendar-day.disabled {
+      color: var(--gray-200);
+      cursor: not-allowed;
+      background: var(--gray-100);
+    }
+
+    .calendar-day.other-month {
+      color: var(--gray-200);
+    }
+
+    /* TIME SLOTS */
+    .time-slots-container {
+      margin-bottom: 32px;
+    }
+
+    .time-slots-label {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin-bottom: 16px;
+    }
+
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 12px;
+    }
+
+    .time-slot {
+      padding: 12px 16px;
+      border: 2px solid var(--gray-200);
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      text-align: center;
+      color: var(--navy-primary);
+      transition: all 0.3s ease;
+    }
+
+    .time-slot:hover {
+      border-color: var(--green-primary);
+      background: rgba(34, 139, 34, 0.1);
+    }
+
+    .time-slot.selected {
+      background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+      color: var(--white);
+      border-color: var(--green-primary);
+    }
+
+    /* BOOKING FORM */
+    .booking-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .booking-summary {
+      background: linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.02));
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      border: 2px solid rgba(34, 139, 34, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .booking-summary h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin-bottom: 12px;
+    }
+
+    .booking-summary p {
+      font-size: 15px;
+      color: var(--text-soft);
+      margin: 8px 0;
+    }
+
+    .booking-summary .selected-info {
+      color: var(--green-primary);
+      font-weight: 600;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy-primary);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      padding: 12px 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--green-primary);
+      box-shadow: 0 0 0 3px rgba(34, 139, 34, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .btn-book {
+      padding: 16px 32px;
+      background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-lg);
+      font-size: 16px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-light);
+    }
+
+    .btn-book:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .btn-book:disabled {
+      background: var(--gray-200);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* LOGO CONTAINER */
+    .logo-container {
+      background: linear-gradient(135deg, rgba(34, 139, 34, 0.9), rgba(0, 26, 58, 0.95)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23001a3a" width="1200" height="600"/></svg>');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    /* NAV */
+    .nav {
+      position: sticky;
+      top: 48px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-light);
+      z-index: 30;
+    }
+
+    .nav-inner {
+      padding: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-nav {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 36px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .nav-link {
+      color: var(--text-soft);
+      padding: 12px 0;
+      position: relative;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--green-primary);
+      transition: all 0.3s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+      left: 0;
+    }
+
+    .nav-link:hover { color: var(--green-primary); }
+
+    /* HERO */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 60px 0;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      z-index: 2;
+      text-align: center;
+      color: var(--white);
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: var(--radius-lg);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+
+    .hero-badge-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green-bright);
+      box-shadow: 0 0 16px rgba(50, 205, 50, 0.8);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.1); }
+    }
+
+    .hero-title {
+      font-size: clamp(3.5rem, 8vw, 5.5rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-subtitle {
+      font-size: 22px;
+      font-weight: 400;
+      opacity: 0.95;
+      margin-bottom: 20px;
+      max-width: 600px;
+    }
+
+    .hero-social-proof {
+      font-size: 16px;
+      opacity: 0.9;
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-social-proof i {
+      color: var(--green-bright);
+      font-size: 18px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: 20px 40px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--red-action), #e52e4f);
+      color: var(--white);
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: var(--shadow-hover);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 32px 80px rgba(220, 20, 60, 0.4);
+    }
+
+    .btn-secondary {
+      padding: 18px 36px;
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      color: var(--white);
+      font-size: 17px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    /* TRUST BADGE */
+    .trust-badge {
+      position: absolute;
+      top: 32px;
+      right: 32px;
+      background: linear-gradient(135deg, var(--green-bright), #90EE90);
+      color: #0f4d0f;
+      padding: 12px 20px;
+      border-radius: var(--radius-lg);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      box-shadow: var(--shadow-hover);
+      z-index: 5;
+    }
+
+    /* PROCESS SECTION */
+    .process {
+      padding: 120px 0;
+      background: var(--white);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 96px;
+    }
+
+    .section-title {
+      font-size: 44px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--navy-primary), var(--green-primary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: 20px;
+      color: var(--text-soft);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 32px;
+    }
+
+    .bento-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 48px 40px;
+      text-align: center;
+      box-shadow: var(--shadow-light);
+      border-top: 6px solid transparent;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--green-primary), var(--green-bright));
+    }
+
+    .bento-card:hover {
+      transform: translateY(-12px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .bento-card a,
+    .bento-card button {
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    .bento-icon {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: var(--white);
+      margin: 0 auto 32px;
+      box-shadow: 0 12px 32px rgba(34, 139, 34, 0.4);
+    }
+
+    .bento-number {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--green-bright);
+      margin-top: 12px;
+    }
+
+    .bento-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin-bottom: 20px;
+      margin-top: 12px;
+    }
+
+    .bento-text {
+      font-size: 17px;
+      color: var(--text-soft);
+      margin-bottom: 0;
+    }
+
+    .bento-time {
+      font-size: 14px;
+      color: var(--green-primary);
+      font-weight: 600;
+      margin-top: 16px;
+    }
+
+    .bento-link,
+    .bento-button {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+      color: var(--white);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .bento-link:hover,
+    .bento-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(34, 139, 34, 0.3);
+    }
+
+    /* WHY US SECTION */
+    .why-us {
+      padding: 120px 0;
+      background: linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.02));
+    }
+
+    .why-us-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 64px;
+    }
+
+    .why-us-card {
+      background: var(--white);
+      padding: 40px 32px;
+      border-radius: var(--radius-lg);
+      text-align: center;
+      box-shadow: var(--shadow-light);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .why-us-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--green-primary);
+    }
+
+    .why-us-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: var(--white);
+      margin: 0 auto 24px;
+      box-shadow: 0 12px 32px rgba(34, 139, 34, 0.3);
+    }
+
+    .why-us-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin-bottom: 12px;
+    }
+
+    .why-us-text {
+      font-size: 16px;
+      color: var(--text-soft);
+    }
+
+    /* FAQ SECTION */
+    .faq {
+      padding: 120px 0;
+      background: var(--white);
+    }
+
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      border-color: var(--green-primary);
+      box-shadow: var(--shadow-light);
+    }
+
+    .faq-question {
+      padding: 24px 32px;
+      background: linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.02));
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .faq-question:hover {
+      background: linear-gradient(135deg, rgba(34, 139, 34, 0.1), rgba(50, 605, 50, 0.05));
+    }
+
+    .faq-question h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin: 0;
+      text-align: left;
+    }
+
+    .faq-icon {
+      font-size: 24px;
+      color: var(--green-primary);
+      transition: transform 0.3s ease;
+      width: 30px;
+      display: flex;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-left: 12px;
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      padding: 0 32px 0 32px;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      background: var(--white);
+    }
+
+    .faq-item.active .faq-answer {
+      padding: 24px 32px;
+      max-height: 500px;
+    }
+
+    .faq-answer p {
+      font-size: 16px;
+      color: var(--text-soft);
+      margin: 0;
+      line-height: 1.8;
+    }
+
+    /* CONTACT SECTION */
+    .contact {
+      padding: 120px 0;
+      background: var(--white);
+    }
+
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .contact-info {
+      padding: 40px 0;
+    }
+
+    .contact-info h3 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin-bottom: 32px;
+    }
+
+    .contact-item {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .contact-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .contact-details h4 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin: 0 0 8px 0;
+    }
+
+    .contact-details p {
+      font-size: 16px;
+      color: var(--text-soft);
+      margin: 0;
+    }
+
+    .contact-details a {
+      color: var(--green-primary);
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .contact-details a:hover {
+      color: var(--green-bright);
+    }
+
+    .contact-form {
+      background: linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.02));
+      padding: 48px 40px;
+      border-radius: var(--radius-lg);
+      border: 2px solid rgba(34, 139, 34, 0.1);
+    }
+
+    /* TRUST */
+    .trust {
+      padding: 120px 0;
+      background: var(--white);
+    }
+
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 48px;
+      margin-top: 64px;
+    }
+
+    .trust-item {
+      text-align: center;
+      padding: 40px 24px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(34, 139, 34, 0.05), rgba(50, 205, 50, 0.03));
+      border: 2px solid rgba(34, 139, 34, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .trust-item:hover {
+      transform: translateY(-6px);
+      border-color: var(--green-primary);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .trust-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--green-primary);
+      border-radius: 20px;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 28px;
+    }
+
+    .trust-label {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy-primary);
+      margin-bottom: 12px;
+    }
+
+    /* FOOTER */
+    .footer {
+      background: var(--navy-primary);
+      padding: 80px 0 48px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-section h4 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 12px;
+    }
+
+    .footer-section ul li a {
+      color: rgba(255, 255, 255, 0.8);
+      transition: color 0.3s ease;
+    }
+
+    .footer-section ul li a:hover {
+      color: var(--green-bright);
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 32px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-logo {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--green-bright), var(--white));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .cta-nav {
+      padding: 14px 28px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, var(--green-primary), var(--green-bright));
+      color: var(--white);
+      font-weight: 600;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      box-shadow: var(--shadow-hover);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      border: none;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cta-nav:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 24px 64px rgba(34, 139, 34, 0.3);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      opacity: 0.7;
+      font-size: 14px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .contact-container {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 24px; }
+      .top-info-inner { flex-direction: column; gap: 16px; }
+      .nav-inner { flex-direction: column; gap: 20px; }
+      .nav-menu { gap: 24px; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .bento-grid { grid-template-columns: 1fr; }
+      .why-us-grid { grid-template-columns: 1fr; }
+      .trust-grid { grid-template-columns: 1fr; }
+      .sticky-cta { bottom: 24px; right: 24px; padding: 12px 20px; font-size: 13px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .section-title { font-size: 32px; }
+      .modal-content { width: 95%; padding: 32px 24px; }
+      .time-slots { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <!-- TOP INFO BAR -->
+  <div class="top-info-bar">
+    <div class="container">
+      <div class="top-info-inner">
+        <div class="top-info-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>3133 North Main Street, Hazard, Kentucky 41701</span>
+        </div>
+        <div class="top-info-item">
+          <i class="fas fa-clock"></i>
+          <span>Mon-Fri: 9AM - 6PM | Sat: 10AM - 3PM</span>
+        </div>
+        <div class="top-info-item">
+          <i class="fas fa-phone"></i>
+          <a href="tel:606-439-1181">606-439-1181</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="logo-nav">Hazard Quick Tax</a>
+        <div class="nav-menu">
+          <a href="#process" class="nav-link">Process</a>
+          <a href="#why-us" class="nav-link">Why Us</a>
+          <a href="#faq" class="nav-link">FAQ</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero logo-container">
+    <div class="trust-badge">
+      <i class="fas fa-check-circle"></i> IRS Authorized
+    </div>
+    
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <div class="hero-badge-dot"></div>
+          Open for 2026 Tax Season
+        </div>
+        <h1 class="hero-title">Fast. Accurate.<br>Hazard Quick Tax.</h1>
+        <p class="hero-subtitle">
+          Simple tax preparation you can trust. Serving Hazard since 1995.
+        </p>
+        <div class="hero-social-proof">
+          <i class="fas fa-star"></i>
+          <span><strong>Walk-Ins & Drop-Offs Welcome</strong></span>
+        </div>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="window.location.href='https://Hazardquicktax.securefilepro.com'"><i class="fas fa-folder-upload"></i> Upload Documents</button>
+          <a href="tel:606-439-1181" class="btn-secondary"><i class="fas fa-phone"></i> Call 606-439-1181</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Simple 3‑Step Process</h2>
+        <p class="section-subtitle">Easy, transparent, and designed for your peace of mind.</p>
+      </div>
+      <div class="bento-grid">
+        <div class="bento-card">
+          <div class="bento-icon">
+            <i class="fas fa-folder-open"></i>
+          </div>
+          <div class="bento-number">Step 1</div>
+          <h3 class="bento-title">Upload Your Documents</h3>
+          <p class="bento-text">Drop your W‑2s, 1099s, and records in our secure portal. Everything is encrypted and safe.</p>
+          <button class="bento-button" onclick="window.location.href='https://Hazardquicktax.securefilepro.com'">Start Upload</button>
+        </div>
+        <div class="bento-card">
+          <div class="bento-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="bento-number">Step 2</div>
+          <h3 class="bento-title">Expert Review</h3>
+          <p class="bento-text">Our team carefully reviews every line, catching deductions you might miss.</p>
+          <div class="bento-time"><i class="fas fa-clock"></i> 2-3 days</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="bento-number">Step 3</div>
+          <h3 class="bento-title">Fast E‑Filing</h3>
+          <p class="bento-text">IRS-approved e-filing with real-time refund tracking. Get your money faster.</p>
+          <a href="https://www.irs.gov/refunds" target="_blank" class="bento-link">Track Refund</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="why-us" id="why-us">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Why Choose Hazard Quick Tax?</h2>
+        <p class="section-subtitle">Here's what makes us different.</p>
+      </div>
+      <div class="why-us-grid">
+        <div class="why-us-card">
+          <div class="why-us-icon">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <h3 class="why-us-title">No Hidden Fees</h3>
+          <p class="why-us-text">You know the price upfront. No surprise charges, ever.</p>
+        </div>
+        <div class="why-us-card">
+          <div class="why-us-icon">
+            <i class="fas fa-user-tie"></i>
+          </div>
+          <h3 class="why-us-title">Local Expert</h3>
+          <p class="why-us-text">Right here in Hazard, serving your unique tax situation.</p>
+        </div>
+        <div class="why-us-card">
+          <div class="why-us-icon">
+            <i class="fas fa-badge-check"></i>
+          </div>
+          <h3 class="why-us-title">IRS Authorized</h3>
+          <p class="why-us-text">Official e-file provider trusted by the IRS.</p>
+        </div>
+        <div class="why-us-card">
+          <div class="why-us-icon">
+            <i class="fas fa-door-open"></i>
+          </div>
+          <h3 class="why-us-title">Walk-Ins & Drop-Offs</h3>
+          <p class="why-us-text">No appointment needed. Drop off your documents anytime we're open.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Quick answers to common questions.</p>
+      </div>
+      <div class="faq-container">
+        <div class="faq-item">
+          <button class="faq-question" type="button" onclick="toggleFAQ(event)">
+            <h3>Do I need an appointment or can I walk in?</h3>
+            <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+          </button>
+          <div class="faq-answer">
+            <p>You can walk in anytime during business hours! We also accept drop-offs if you prefer to leave your documents with us. Appointments are available for those who prefer a scheduled time.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button" onclick="toggleFAQ(event)">
+            <h3>What documents do I need to bring?</h3>
+            <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+          </button>
+          <div class="faq-answer">
+            <p>Generally, we need your W-2s, 1099 forms, receipts for deductions (medical, charitable, business), proof of dependents, and any education expenses. We'll give you a full checklist when you visit!</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button" onclick="toggleFAQ(event)">
+            <h3>How long until I get my refund?</h3>
+            <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+          </button>
+          <div class="faq-answer">
+            <p>With IRS e-filing, refunds typically arrive in 7-14 business days. Paper returns can take 4-6 weeks. You can track your refund status in real-time with us!</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button" onclick="toggleFAQ(event)">
+            <h3>Is my information secure?</h3>
+            <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! Our portal uses bank-level encryption (256-bit SSL). All documents are password-protected and securely stored. Your privacy is our top priority.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button" onclick="toggleFAQ(event)">
+            <h3>Can you help with self-employed taxes?</h3>
+            <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+          </button>
+          <div class="faq-answer">
+            <p>Absolutely! We specialize in self-employed, freelance, and small business taxes. Bring your income records and business expenses, and we'll help you maximize deductions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Get Started Today</h2>
+        <p class="section-subtitle">Visit us, call, or send a message. We're here to help!</p>
+      </div>
+      <div class="contact-container">
+        <div class="contact-info">
+          <h3>Contact Information</h3>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Phone</h4>
+              <p><a href="tel:606-439-1181">606-439-1181</a></p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Location</h4>
+              <p>3133 North Main Street<br>Hazard, Kentucky 41701</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Hours</h4>
+              <p>Mon-Fri: 9AM - 6PM<br>Sat: 10AM - 3PM<br>Sun: Closed</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-door-open"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Walk-Ins & Drop-Offs</h4>
+              <p>Welcome anytime during business hours. No appointment necessary!</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="contact-details">
+              <h4>Email</h4>
+              <p><a href="mailto:Tammyrichiecpa@gmail.com">Tammyrichiecpa@gmail.com</a></p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <button class="btn-primary" onclick="window.location.href='https://Hazardquicktax.securefilepro.com'" style="width: 100%; margin-bottom: 24px; cursor: pointer;">
+            <i class="fas fa-folder-upload"></i> Start Uploading
+          </button>
+          <div class="contact-form">
+  <form id="tax-contact-form">
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="user-name" placeholder="Your Name" required>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="user-email" placeholder="Your Email" required>
+    </div>
+    <div class="form-group">
+      <label>Message</label>
+      <textarea id="user-message" placeholder="How can we help?"></textarea>
+    </div>
+    <button type="submit" class="btn-book">Send Message</button>
+  </form>
+</div>
+
+<script>
+  // This script connects your button to the Cloudflare Worker
+  document.getElementById('tax-contact-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = {
+      name: document.getElementById('user-name').value,
+      email: document.getElementById('user-email').value,
+      message: document.getElementById('user-message').value
+    };
+
+    try {
+      // REPLACE THE URL BELOW WITH YOUR ACTUAL WORKER URL 
+      const response = await fetch('https://hazardquicktax-worker.YOURNAME.workers.dev', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        alert('Success! Your message has been sent to Hazard Quick Tax.');
+      } else {
+        alert('There was a connection issue. Please call us at 606-439-1181.');
+      }
+    } catch (err) {
+      alert('Error sending message. Please check your internet or call us.');
+    }
+  });
+</script>
+
+  <!-- TRUST -->
+  <section class="trust" id="trust">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Trusted Since 1995</h2>
+        <p class="section-subtitle">30+ years serving Hazard families and businesses.</p>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-item">
+          <div class="trust-icon"><i class="fas fa-certificate"></i></div>
+          <div class="trust-label">IRS Authorized E‑File</div>
+          <div style="font-size: 15px; color: var(--text-soft);">Fastest, safest filing approved by IRS.</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon"><i class="fas fa-history"></i></div>
+          <div class="trust-label">30+ Years Experience</div>
+          <div style="font-size: 15px; color: var(--text-soft);">Local expertise you can count on.</div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon"><i class="fas fa-shield-alt"></i></div>
+          <div class="trust-label">Accuracy Guaranteed</div>
+          <div style="font-size: 15px; color: var(--text-soft);">Peace of mind with every return.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">Hazard Quick Tax</div>
+        <a href="tel:606-439-1181" class="cta-nav">
+          <i class="fas fa-phone"></i> Call Us<br>606-439-1181
+        </a>
+      </div>
+
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#process">Our Process</a></li>
+            <li><a href="#why-us">Why Us</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#">Individual Tax Returns</a></li>
+            <li><a href="#">Self-Employed Taxes</a></li>
+            <li><a href="#">Business Taxes</a></li>
+            <li><a href="#">E-Filing</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact Us</h4>
+          <ul>
+            <li><a href="tel:606-439-1181">606-439-1181</a></li>
+            <li><a href="mailto:Tammyrichiecpa@gmail.com">Tammyrichiecpa@gmail.com</a></li>
+            <li>3133 North Main Street</li>
+            <li>Hazard, Kentucky 41701</li>
+            <li>Mon-Fri: 9AM - 6PM</li>
+            <li>Walk-Ins Welcome!</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2026 Hazard Quick Tax · Hazard, Kentucky · Serving you since 1995 · <a href="#" style="color: var(--green-bright);">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- STICKY CTA BUTTON -->
+  <button class="sticky-cta" onclick="window.location.href='https://Hazardquicktax.securefilepro.com'">
+    <i class="fas fa-folder-upload"></i>
+    Upload Docs
+  </button>*
